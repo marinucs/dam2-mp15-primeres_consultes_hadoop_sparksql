@@ -1,0 +1,28 @@
+#!/usr/bin/python3.10
+# -*- coding: utf-8 -*-
+
+import findspark
+from pyspark import SparkContext, SparkConf
+from pyspark.sql import SparkSession
+
+# Inicialitzem Spark
+findspark.init()
+# Generem el context
+sc = SparkContext()
+# Creating a spark session
+spark = SparkSession \
+    .builder \
+    .appName("DAM-M15. Python Spark DataFrames: ús bàsic") \
+    .config("spark.opció.configuració", "valor de configuració") \
+    .getOrCreate()
+
+
+df = spark.read.json("movies.json").cache()
+df.show()
+df.printSchema()
+df.createTempView("movies")
+df.select("titol").show()
+df.select(df["titol"]).show()
+spark.sql("Select titol from movies").show()
+
+spark.stop()
